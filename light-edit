@@ -1047,6 +1047,6 @@ local function VJWD_fake_script() -- close.LocalScript
 
 	script.Parent.MouseButton1Click:Connect(function()
 		script.Parent.Parent.Parent.Parent:Destroy()
-	end
+	end)
 end
 coroutine.wrap(VJWD_fake_script)()
