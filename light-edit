@@ -367,13 +367,449 @@ local Category = Tab:AddCategory("Clear")
 
 --Clear Button
 local Button = Category:AddButton("Disable All Effects", function()
-for _, instance in pairs(Lighting:GetDescendants()) do
-	if instance:IsA("BloomEffect") or instance:IsA("BlurEffect") or instance:IsA("ColorCorrectionEffect") or instance:IsA("DepthOfFieldEffect") or instance:IsA("SunRaysEffect") then
+	for _, instance in pairs(Lighting:GetDescendants()) do
+		if instance:IsA("BloomEffect") or instance:IsA("BlurEffect") or instance:IsA("ColorCorrectionEffect") or instance:IsA("DepthOfFieldEffect") or instance:IsA("SunRaysEffect") then
 			instance.Enabled = false
 		end
 	end
 end)
 
+--Export Tab
+local Tab = Gui:AddTab("Export")
+
+--Export
+local Category = Tab:AddCategory("Export")
+
+
+local Button = Category:AddButton("Export Lighting as Script", function()
+	local GetTech = gethiddenproperty(Lighting, "Technology")
+	local LightAmbient = Lighting.Ambient
+	local ClockTE = Lighting.ClockTime
+	local CST = Lighting.ColorShift_Top
+	local CSB = Lighting.ColorShift_Bottom
+	local EnvDiff = Lighting.EnvironmentDiffuseScale
+	local EnvSpec = Lighting.EnvironmentSpecularScale
+	local Expose = Lighting.ExposureCompensation
+	local FogC = Lighting.FogColor
+	local FogEnd = Lighting.FogEnd
+	local FogStart = Lighting.FogStart
+	local GeoLat = Lighting.GeographicLatitude
+	local Shadows = Lighting.GlobalShadows
+	local OutAmb = Lighting.OutdoorAmbient
+	local ShaSof = Lighting.ShadowSoftness
+	local TimeDay = Lighting.TimeOfDay
+	writefile("Lighting"..math.random(1000, 9999)..".lua", "local Light = game:GetService(".."Lighting"..") sethiddenproperty(Light,".."'Technology', "..tostring(GetTech)..")".." Light.Ambient = ".."'"..tostring(LightAmbient).."'".." Light.ClockTime = ".."'"..ClockTE.."'".." Lighting.ColorShift_Top = ".."'"..tostring(CST).."'".." Lighting.ColorShift_Bottom = ".."'"..tostring(CSB).."'".." Lighting.EnvironmentDiffuseScale = ".."'"..EnvDiff.."'".." Lighting.EnvironmentSpecularScale = ".."'"..EnvSpec.."'".." Lighting.ExposureCompensation = ".."'"..Expose.."'".." Lighting.FogColor = ".."'"..tostring(FogC).."'".." Lighting.FogEnd = ".."'"..FogEnd.."'".." Lighting.FogStart = ".."'"..FogStart.."'".." Lighting.GeographicLatitude = ".."'"..GeoLat.."'".." Lighting.GlobalShadows = "..tostring(Shadows).." Lighting.OutdoorAmbient = ".."'"..tostring(OutAmb).."'".." Lighting.ShadowSoftness = ".."'"..ShaSof.."'".." Lighting.TimeOfDay = ".."'"..TimeDay.."'")
+	notify("File saved successfully! Check workspace folder.")
+end)
+
+--Close Tab
+local Tab = Gui:AddTab("Close")
+
+--Close
+local Category = Tab:AddCategory("Close")
+--Create library
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/RegularVynixu/IreXion-UI-Library/main/IreXion%20UI%20Library"))()
+local Gui = Library:AddGui({
+	Title = {"Light Edit", "Made by Lozarth"},
+	ThemeColor = Color3.fromRGB(0, 0, 0),
+	ToggleKey = Enum.KeyCode.RightShift,
+})
+
+--Locals
+local Lighting = game:GetService("Lighting")
+local CoreGui = game:GetService("CoreGui")
+
+--Effects
+local CBloomE = Instance.new("BloomEffect") CBloomE.Parent = Lighting CBloomE.Name = "CBloomE" CBloomE.Enabled = false
+local CBlurE = Instance.new("BlurEffect") CBlurE.Parent = Lighting CBlurE.Name = "CBloomE" CBlurE.Enabled =	false
+local CColorCorrectionE = Instance.new("ColorCorrectionEffect") CColorCorrectionE.Parent = Lighting CColorCorrectionE.Name = "CColorCorrectionE" CColorCorrectionE.Enabled = false
+local CDepthOfFieldE = Instance.new("DepthOfFieldEffect") CDepthOfFieldE.Parent = Lighting CDepthOfFieldE.Name = "CDepthOfFieldE" CDepthOfFieldE.Enabled = false
+local CSunRaysE = Instance.new("SunRaysEffect") CSunRaysE.Parent = Lighting CSunRaysE.Name = "CSunRaysE" CSunRaysE.Enabled = false
+
+--Properties Tab
+local Tab = Gui:AddTab("Properties")
+
+--Technology
+local Category = Tab:AddCategory("Technology")
+
+
+local Dropdown = Category:AddDropdown("Technology", {
+	"Future",
+	"ShadowMap",
+	"Voxel",
+	"Compatibility",
+}, function(name)
+	if name == "Future" then
+		sethiddenproperty(game.Lighting, "Technology", Enum.Technology.Future)
+	elseif name == "ShadowMap" then
+		sethiddenproperty(game.Lighting, "Technology", Enum.Technology.ShadowMap)
+	elseif name == "Voxel" then
+		sethiddenproperty(game.Lighting, "Technology", Enum.Technology.Voxel)
+	elseif name == "Compatibility" then
+		sethiddenproperty(game.Lighting, "Technology", Enum.Technology.Compatibility)
+	end
+end)
+
+--Brightness
+local Category = Tab:AddCategory("Brightness")
+
+--Brightness Slider and Box
+local Slider = Category:AddSlider("Brightness", 0, 10, Lighting.Brightness, function(val)
+	Lighting.Brightness = val
+end)
+
+--Ambient
+local Category = Tab:AddCategory("Ambient")
+
+--Ambient Red Slider and Box
+local Slider = Category:AddSlider("Ambient Red", 0, 1, Lighting.Ambient.R, function(val)
+	Lighting.Ambient = Color3.new(val, Lighting.Ambient.g, Lighting.Ambient.b)
+end)
+
+--Ambient Green Slider and Box
+local Slider = Category:AddSlider("Ambient Green", 0, 1, Lighting.Ambient.G, function(val)
+	Lighting.Ambient = Color3.new(Lighting.Ambient.r, val, Lighting.Ambient.b)
+end)
+
+--Ambient Blue Slider and Box
+local Slider = Category:AddSlider("Ambient Blue", 0, 1, Lighting.Ambient.B, function(val)
+	Lighting.Ambient = Color3.new(Lighting.Ambient.r, Lighting.Ambient.g, val)
+end)
+
+--OutdoorAmbient
+local Category = Tab:AddCategory("OutdoorAmbient")
+
+--OutdoorAmbient Red Slider and Box
+local Slider = Category:AddSlider("OutdoorAmbient Red", 0, 1, Lighting.OutdoorAmbient.R, function(val)
+	Lighting.OutdoorAmbient = Color3.new(val, Lighting.OutdoorAmbient.g, Lighting.OutdoorAmbient.b)
+end)
+
+--OutdoorAmbient Green Slider and Box
+local Slider = Category:AddSlider("OutdoorAmbient Green", 0, 1, Lighting.OutdoorAmbient.G, function(val)
+	Lighting.OutdoorAmbient = Color3.new(Lighting.OutdoorAmbient.r, val, Lighting.OutdoorAmbient.b)
+end)
+
+--OutdoorAmbient Blue Slider and Box
+local Slider = Category:AddSlider("OutdoorAmbient Blue", 0, 1, Lighting.OutdoorAmbient.B, function(val)
+	Lighting.OutdoorAmbient = Color3.new(Lighting.OutdoorAmbient.r, Lighting.OutdoorAmbient.g, val)
+end)
+
+--ClockTime
+local Category = Tab:AddCategory("ClockTime")
+
+--ClockTime  Slider
+local Slider = Category:AddSlider("ClockTime", 0, 23.9, Lighting.ClockTime, function(val)
+	Lighting.ClockTime = val
+end)
+
+--Colorshift
+local Category = Tab:AddCategory("ColorShift")
+
+local Label = Category:AddLabel("ColorShift_Top")
+
+--ColorShift_Top Red Slider
+local Slider = Category:AddSlider("ColorShift_Top Red", 0, 1, Lighting.ColorShift_Top.R, function(val)
+	Lighting.ColorShift_Top = Color3.new(val, Lighting.ColorShift_Top.g, Lighting.ColorShift_Top.b)
+end)
+
+--ColorShift_Top Green Slider
+local Slider = Category:AddSlider("ColorShift_Top Green", 0, 1, Lighting.ColorShift_Top.G, function(val)
+	Lighting.ColorShift_Top = Color3.new(Lighting.ColorShift_Top.r, val, Lighting.ColorShift_Top.b)
+end)
+
+--ColorShift_Top Blue Slider
+local Slider = Category:AddSlider("ColorShift_Top Blue", 0, 1, Lighting.ColorShift_Top.B, function(val)
+	Lighting.ColorShift_Top = Color3.new(Lighting.ColorShift_Top.r, Lighting.ColorShift_Top.g, val)
+end)
+
+local Label = Category:AddLabel("ColorShift_Bottom")
+
+--ColorShift_Bottom Red Slider
+local Slider = Category:AddSlider("ColorShift_Bottom Red", 0, 1, Lighting.ColorShift_Bottom.R, function(val)
+	Lighting.ColorShift_Bottom = Color3.new(val, Lighting.ColorShift_Bottom.g, Lighting.ColorShift_Bottom.b)
+end)
+
+--ColorShift_Bottom Green Slider
+local Slider = Category:AddSlider("ColorShift_Bottom Green", 0, 1, Lighting.ColorShift_Bottom.G, function(val)
+	Lighting.ColorShift_Bottom = Color3.new(Lighting.ColorShift_Bottom.r, val, Lighting.ColorShift_Bottom.b)
+end)
+
+--ColorShift_Bottom Blue Slider
+local Slider = Category:AddSlider("ColorShift_Bottom Blue", 0, 1, Lighting.ColorShift_Bottom.B, function(val)
+	Lighting.ColorShift_Bottom = Color3.new(Lighting.ColorShift_Bottom.r, Lighting.ColorShift_Bottom.g, val)
+end)
+
+--Enviroment Spec/Diff
+local Category = Tab:AddCategory("Enviroment")
+
+--Diffuse Scale Slider and Box
+local Slider = Category:AddSlider("Enviroment Diffuse", 0, 1, Lighting.EnvironmentDiffuseScale, function(val)
+	Lighting.EnvironmentDiffuseScale = val
+end)
+
+--Specular Scale Slider and Box
+local Slider = Category:AddSlider("Enviroment Specular", 0, 1, Lighting.EnvironmentSpecularScale, function(val)
+	Lighting.EnvironmentSpecularScale = val
+end)
+
+--Fog
+local Category = Tab:AddCategory("Fog")
+
+--FogStart Slider
+local Slider = Category:AddSlider("FogStart", 0, 100000, Lighting.FogStart, function(val)
+	Lighting.FogStart = val
+end)
+--FogEnd Slider and Box
+local Slider = Category:AddSlider("FogEnd", 0, 100000, Lighting.FogEnd, function(val)
+	Lighting.FogEnd = val
+end)
+
+--FogColor Red Slider
+local Slider = Category:AddSlider("FogColor Red", 0, 1, Lighting.FogColor.R, function(val)
+	Lighting.FogColor = Color3.new(val, Lighting.FogColor.g, Lighting.FogColor.b)
+end)
+
+--FogColor Green Slider
+local Slider = Category:AddSlider("FogColor Green", 0, 1, Lighting.FogColor.G, function(val)
+	Lighting.FogColor = Color3.new(Lighting.FogColor.r, val, Lighting.FogColor.b)
+end)
+
+--FogColor Blue Slider
+local Slider = Category:AddSlider("FogColor Blue", 0, 1, Lighting.FogColor.B, function(val)
+	Lighting.FogColor = Color3.new(Lighting.FogColor.r, Lighting.FogColor.g, val)
+end)
+
+--GlobalShadows
+local Category = Tab:AddCategory("GlobalShadows")
+
+--GlobalShadows Toggle
+local Toggle = Category:AddToggle("GlobalShadows", true, function(toggle)
+	if toggle == false then
+		Lighting.GlobalShadows = false
+	else
+		Lighting.GlobalShadows = true
+	end
+end)
+
+--ShadowSoftness
+local Category = Tab:AddCategory("ShadowSoftness")
+
+--ShadowSoftness Slider and Box
+local Slider = Category:AddSlider("ShadowSoftness", 0, 1, Lighting.ShadowSoftness, function(val)
+	Lighting.ShadowSoftness = val
+end)
+
+--ExposureCompensation
+local Category = Tab:AddCategory("Exposure")
+
+--ExposureCompensation Slider and Box
+local Slider = Category:AddSlider("ExposureCompensation", -3, 3, Lighting.ExposureCompensation, function(val)
+	Lighting.ExposureCompensation = val
+end)
+
+--GeographicLatitude
+local Category = Tab:AddCategory("GeographicLatitude")
+
+--GeographicLatitude Slider
+local Slider = Category:AddSlider("GeographicLatitude", 0, 360, Lighting.GeographicLatitude, function(val)
+	Lighting.GeographicLatitude = val
+end)
+
+--TimeOfDay
+local Category = Tab:AddCategory("TimeOfDay")
+
+--TimeOfDay Box
+
+local Box = Category:AddBox("TimeOfDay (00:00:00)", function(str)
+	Lighting.TimeOfDay = str
+end)
+
+--FX Tab
+local Tab = Gui:AddTab("Effects")
+
+--Bloom
+local Category = Tab:AddCategory("Bloom")
+
+--Warning
+local Label = Category:AddLabel("Many of these effects only work on high graphics.")
+
+--Bloom Toggle
+local Toggle = Category:AddToggle("Bloom Enabled", false, function(toggle)
+	if toggle == true then
+		CBloomE.Enabled = true
+	else
+		CBloomE.Enabled = false
+	end
+end)
+
+--Bloom Intensity Slider
+local Slider = Category:AddSlider("Bloom Intensity", 0, 1, 1, function(val)
+	CBloomE.Intensity = val
+end)
+
+--Bloom Size Slider
+local Slider = Category:AddSlider("Bloom Size", 0, 56, 24, function(val)
+	CBloomE.Size = val
+end)
+
+--Bloom Threshold Slider
+local Slider = Category:AddSlider("Bloom Threshold", 0.8, 4, 2, function(val)
+	CBloomE.Threshold = val
+end)
+
+--Blur
+local Category = Tab:AddCategory("Blur")
+
+--Blur Toggle
+local Toggle = Category:AddToggle("Blur Enabled", false, function(toggle)
+	if toggle == true then
+		CBlurE.Enabled = true
+	else
+		CBlurE.Enabled = false
+	end
+end)
+
+--Blur Size Slider
+local Slider = Category:AddSlider("Blur Size", 0, 56, 24, function(val)
+	CBlurE.Size = val
+end)
+
+--ColorCorrection
+local Category = Tab:AddCategory("ColorCorrection")
+
+--CC Toggle
+local Toggle = Category:AddToggle("ColorCorrection Enabled", false, function(toggle)
+	if toggle == true then
+		CColorCorrectionE.Enabled = true
+	else
+		CColorCorrectionE.Enabled = false
+	end
+end)
+
+--CC Brightness Slider
+local Slider = Category:AddSlider("Brightness", -1, 1, 0, function(val)
+	CColorCorrectionE.Brightness = val
+end)
+
+--CC Contrast Slider
+local Slider = Category:AddSlider("Contrast", -1, 1, 0, function(val)
+	CColorCorrectionE.Contrast = val
+end)
+
+--CC Saturation Slider
+local Slider = Category:AddSlider("Saturation", -1, 1, 0, function(val)
+	CColorCorrectionE.Saturation = val
+end)
+
+--Tint Red Slider
+local Slider = Category:AddSlider("TintColor Red", 0, 1, 0, function(val)
+	CColorCorrectionE.TintColor = Color3.new(val, CColorCorrectionE.TintColor.g, CColorCorrectionE.TintColor.b)
+end)
+
+--Tint Green Slider
+local Slider = Category:AddSlider("TintColor Green", 0, 1, 0, function(val)
+	CColorCorrectionE.TintColor = Color3.new(CColorCorrectionE.TintColor.r, val, CColorCorrectionE.TintColor.b)
+end)
+
+--Tint Blue Slider
+local Slider = Category:AddSlider("TintColor Blue", 0, 1, 0, function(val)
+	CColorCorrectionE.TintColor = Color3.new(CColorCorrectionE.TintColor.r, CColorCorrectionE.TintColor.g, val)
+end)
+
+
+--DepthOfField
+local Category = Tab:AddCategory("DepthOfField")
+
+--DepthOfField Toggle
+local Toggle = Category:AddToggle("DepthOfField Enabled", false, function(toggle)
+	if toggle == true then
+		CDepthOfFieldE.Enabled = true
+	else
+		CDepthOfFieldE.Enabled = false
+	end
+end)
+
+--FarIntensity
+local Slider = Category:AddSlider("FarIntensity", 0, 1, 0.75, function(val)
+	CDepthOfFieldE.FarIntensity = val
+end)
+
+--NearIntensity
+local Slider = Category:AddSlider("NearIntensity", 0, 1, 0.75, function(val)
+	CDepthOfFieldE.NearIntensity = val
+end)
+
+--InFocusRadius
+local Slider = Category:AddSlider("InFocusRadius", 0, 50, 10, function(val)
+	CDepthOfFieldE.InFocusRadius = val
+end)
+
+--FocusDistance
+local Slider = Category:AddSlider("FocusDistance", 0, 50, 10, function(val)
+	CDepthOfFieldE.FocusDistance = val
+end)
+
+--SunRays
+local Category = Tab:AddCategory("SunRays")
+
+--SunRays Toggle
+local Toggle = Category:AddToggle("SunRays Enabled", false, function(toggle)
+	if toggle == true then
+		CSunRaysE.Enabled = true
+	else
+		CSunRaysE.Enabled = false
+	end
+end)
+
+--Intensity Slider
+local Slider = Category:AddSlider("SunRays Intensity", 0, 1, 0.25, function(val)
+	CSunRaysE.Intensity = val
+end)
+
+--Spread Slider
+local Slider = Category:AddSlider("SunRays Spread", 0, 1, 1, function(val)
+	CSunRaysE.Spread = val
+end)
+
+--Clear
+local Category = Tab:AddCategory("Clear")
+
+--Clear Button
+local Button = Category:AddButton("Disable All Effects", function()
+	for _, instance in pairs(Lighting:GetDescendants()) do
+		if instance:IsA("BloomEffect") or instance:IsA("BlurEffect") or instance:IsA("ColorCorrectionEffect") or instance:IsA("DepthOfFieldEffect") or instance:IsA("SunRaysEffect") then
+			instance.Enabled = false
+		end
+	end
+end)
+
+--Export Tab
+local Tab = Gui:AddTab("Export")
+
+--Export
+local Category = Tab:AddCategory("Export")
+
+
+local Button = Category:AddButton("Export Lighting as Script", function()
+	local GetTech = gethiddenproperty(Lighting, "Technology")
+	local LightAmbient = Lighting.Ambient
+	local ClockTE = Lighting.ClockTime
+	local CST = Lighting.ColorShift_Top
+	local CSB = Lighting.ColorShift_Bottom
+	local EnvDiff = Lighting.EnvironmentDiffuseScale
+	local EnvSpec = Lighting.EnvironmentSpecularScale
+	local Expose = Lighting.ExposureCompensation
+	local FogC = Lighting.FogColor
+	local FogEnd = Lighting.FogEnd
+	local FogStart = Lighting.FogStart
+	local GeoLat = Lighting.GeographicLatitude
+	local Shadows = Lighting.GlobalShadows
+	local OutAmb = Lighting.OutdoorAmbient
+	local ShaSof = Lighting.ShadowSoftness
+	local TimeDay = Lighting.TimeOfDay
+	local Brightness = Lighting.Brightness
+	writefile("Lighting"..math.random(1000, 9999)..".lua", "local Light = game:GetService(".."'".."Lighting".."'"..")".."\n".."sethiddenproperty(Light,".."'Technology', "..tostring(GetTech)..")".."\n".."Light.Ambient = ".."Color3.new("..tostring(LightAmbient)..")".."\n".." Light.ClockTime = ".."'"..ClockTE.."'".."\n".."Light.ColorShift_Top = ".."Color3.new("..tostring(CST)..")".."\n".."Light.ColorShift_Bottom = ".."Color3.new("..tostring(CSB)..")".."\n".."Light.EnvironmentDiffuseScale = ".."'"..EnvDiff.."'".."\n".."Light.EnvironmentSpecularScale = ".."'"..EnvSpec.."'".."\n".."Light.ExposureCompensation = ".."'"..Expose.."'".."\n".."Light.FogColor = ".."Color3.new("..tostring(FogC)..")".."\n".."Light.FogEnd = ".."'"..FogEnd.."'".."\n".."Light.FogStart = ".."'"..FogStart.."'".."\n".."Light.GeographicLatitude = ".."'"..GeoLat.."'".."\n".."Light.GlobalShadows = "..tostring(Shadows).."\n".."Light.OutdoorAmbient = ".."Color3.new("..tostring(OutAmb)..")".."\n".."Light.ShadowSoftness = ".."'"..ShaSof.."'".."\n".."Light.TimeOfDay = ".."'"..TimeDay.."'".."\n".."Light.Brightness = "..Brightness)
+end)
 
 --Close Tab
 local Tab = Gui:AddTab("Close")
@@ -381,6 +817,48 @@ local Tab = Gui:AddTab("Close")
 --Close
 local Category = Tab:AddCategory("Close")
 
+--Close Button
+local Button = Category:AddButton("Close GUI", function()
+	CoreGui.IreXionUILib:Destroy()
+end)
+
+--Discord invite (credit to inf yield for clipboard script)
+Library:Notify("Copy Discord server invite to clipboard?", function(bool)
+	if bool == true then
+		local clipBoard = setclipboard or toclipboard or set_clipboard or (Clipboard and Clipboard.set)
+		if clipBoard then
+			clipBoard("https://discord.gg/hsdcAFZY9E")
+			Library:Notify("Invite copied to clipboard.")
+		else
+			print("https://discord.gg/hsdcAFZY9E")
+			Library:Notify("Your exploit does not support clipboard. Press F9 to see the invite.")
+		end
+	end
+end)
+
+--Mods
+
+--rainbow text
+local r = {
+	Color3.fromRGB(255, 0, 0);		--red
+	Color3.fromRGB(255, 127, 0);	--orange
+	Color3.fromRGB(255, 221, 1);	--yellow
+	Color3.fromRGB(0, 200, 0);		--green
+	Color3.fromRGB(0, 160, 199);	--light blue
+	Color3.fromRGB(0, 4, 255);		--dark blue
+	Color3.fromRGB(86, 14, 210)}	--purple
+local info = TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, 0, false, 0)
+CoreGui.IreXionUILib.Top["Title_Holder"].Title2.TextColor3 = r[1]
+ThemeColor = r[1]
+i = 1
+while true do
+	local tween = game:GetService("TweenService"):Create(CoreGui.IreXionUILib.Top["Title_Holder"].Title2, info, {
+		TextColor3 = r[i]})
+	tween:Play()
+	repeat wait() until tween.Completed
+	wait(0.1)
+	if i == #r then i = 1 else i = i + 1 end
+end
 --Close Button
 local Button = Category:AddButton("Close GUI", function()
 	CoreGui.IreXionUILib:Destroy()
