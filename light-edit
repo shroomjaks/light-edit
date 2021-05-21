@@ -399,7 +399,7 @@ local Button = Category:AddButton("Export Lighting as Script", function()
 	local ShaSof = Lighting.ShadowSoftness
 	local TimeDay = Lighting.TimeOfDay
 	writefile("Lighting"..math.random(1000, 9999)..".lua", "local Light = game:GetService(".."Lighting"..") sethiddenproperty(Light,".."'Technology', "..tostring(GetTech)..")".." Light.Ambient = ".."'"..tostring(LightAmbient).."'".." Light.ClockTime = ".."'"..ClockTE.."'".." Lighting.ColorShift_Top = ".."'"..tostring(CST).."'".." Lighting.ColorShift_Bottom = ".."'"..tostring(CSB).."'".." Lighting.EnvironmentDiffuseScale = ".."'"..EnvDiff.."'".." Lighting.EnvironmentSpecularScale = ".."'"..EnvSpec.."'".." Lighting.ExposureCompensation = ".."'"..Expose.."'".." Lighting.FogColor = ".."'"..tostring(FogC).."'".." Lighting.FogEnd = ".."'"..FogEnd.."'".." Lighting.FogStart = ".."'"..FogStart.."'".." Lighting.GeographicLatitude = ".."'"..GeoLat.."'".." Lighting.GlobalShadows = "..tostring(Shadows).." Lighting.OutdoorAmbient = ".."'"..tostring(OutAmb).."'".." Lighting.ShadowSoftness = ".."'"..ShaSof.."'".." Lighting.TimeOfDay = ".."'"..TimeDay.."'")
-	notify("File saved successfully! Check workspace folder.")
+	Library:Notify("File saved successfully! Check workspace folder.")
 end)
 
 --Close Tab
